@@ -3,10 +3,19 @@
 Dipakai pada fitur: keterhubungan lokasi rak perpustakaan dan rute antar rak.
 Mendukung 4 variasi: berarah / tidak berarah, berbobot / tidak berbobot.
 BFS memakai Queue buatan sendiri (structures/antrean.py).
+Data rak dibaca dari data/data_rak.csv, jalur antar rak dari data/koneksi_rak.csv.
 Tidak memakai dict, deque, atau library graph bawaan.
 """
 
+import csv
+import os
+
 from .antrean import Queue
+
+# Lokasi file data default: folder 'data' di sebelah folder 'structures'.
+_FOLDER_DATA = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+FILE_RAK = os.path.join(_FOLDER_DATA, "data_rak.csv")
+FILE_KONEKSI = os.path.join(_FOLDER_DATA, "koneksi_rak.csv")
 
 
 class Sisi:
@@ -19,10 +28,11 @@ class Sisi:
 
 
 class Simpul:
-    """Satu simpul (vertex): menyimpan id dan kepala daftar tetangganya."""
+    """Satu simpul (vertex): menyimpan id, keterangan, dan kepala daftar tetangganya."""
 
-    def __init__(self, id_simpul):
+    def __init__(self, id_simpul, keterangan=""):
         self.id = id_simpul
+        self.keterangan = keterangan  # mis. "Rak Komik (Lantai 1 - Zona A)"
         self.kepala = None            # sisi pertama
         self.ekor = None              # sisi terakhir (agar penambahan O(1))
 
@@ -49,13 +59,13 @@ class Graph:
                 return i
         return -1
 
-    def tambah_simpul(self, id_simpul):
+    def tambah_simpul(self, id_simpul, keterangan=""):
         """Menambah simpul baru. O(V) karena mengecek duplikat."""
         if not isinstance(id_simpul, str) or id_simpul.strip() == "":
             raise ValueError("ID simpul harus berupa string yang tidak kosong.")
         if self.cari_indeks(id_simpul) != -1:
             raise ValueError(f"Simpul {id_simpul} sudah ada.")
-        self._simpul.append(Simpul(id_simpul))
+        self._simpul.append(Simpul(id_simpul, keterangan))
 
     def _sambung(self, dari, ke, bobot):
         """Menambahkan satu sisi searah dari indeks 'dari' ke indeks 'ke'. O(1)."""
@@ -108,6 +118,17 @@ class Graph:
         arah = "berarah" if self.berarah else "tidak berarah"
         bobot = "berbobot" if self.berbobot else "tidak berbobot"
         return f"{arah}, {bobot}"
+
+    def daftar_simpul(self):
+        """Daftar id semua simpul sesuai urutan penambahan."""
+        return [simpul.id for simpul in self._simpul]
+
+    def keterangan(self, id_simpul):
+        """Keterangan sebuah simpul (mis. nama dan lokasi rak)."""
+        i = self.cari_indeks(id_simpul)
+        if i == -1:
+            raise ValueError(f"Simpul {id_simpul} tidak ditemukan.")
+        return self._simpul[i].keterangan
 
     def tetangga(self, id_simpul):
         """Daftar id tetangga sebuah simpul, sesuai urutan penambahan sisi."""
@@ -213,36 +234,98 @@ class Graph:
         return [self._simpul[x].id for x in indeks_rute], total
 
 
-def buat_graph_rak():
-    """Graph utama: 10 rak, tidak berarah, berbobot (jarak jalan kaki dalam meter)."""
-    g = Graph(berarah=False, berbobot=True)
-    for nomor in range(1, 11):
-        g.tambah_simpul(f"R{nomor:02d}")
-    sisi = [("R01", "R02", 4), ("R02", "R03", 6), ("R03", "R04", 4), ("R04", "R05", 7),
-            ("R05", "R06", 4), ("R06", "R07", 6), ("R07", "R08", 4), ("R08", "R09", 7),
-            ("R09", "R10", 4), ("R01", "R05", 9), ("R02", "R06", 9), ("R03", "R07", 8),
-            ("R04", "R08", 8)]
-    for asal, tujuan, bobot in sisi:
-        g.tambah_sisi(asal, tujuan, bobot)
-    return g
+# ---------- memuat graph rak dari file data ----------
+def _baca_csv(path, kolom_wajib):
+    """Membaca CSV menjadi list baris. Memeriksa file dan nama kolom."""
+    if not os.path.isfile(path):
+        raise FileNotFoundError(f"File data tidak ditemukan: {path}")
+    with open(path, newline="", encoding="utf-8-sig") as berkas:
+        pembaca = csv.DictReader(berkas)
+        kolom = pembaca.fieldnames or []
+        kurang = [k for k in kolom_wajib if k not in kolom]
+        if kurang:
+            raise ValueError(f"{os.path.basename(path)}: kolom wajib tidak ada: {', '.join(kurang)}")
+        return list(pembaca)
+
+
+def _ke_angka(teks):
+    """Mengubah teks jarak menjadi int atau float. Raise ValueError jika bukan angka."""
+    teks = (teks or "").strip()
+    try:
+        return int(teks)
+    except ValueError:
+        pass
+    try:
+        return float(teks)
+    except ValueError:
+        raise ValueError(f"jarak_m harus berupa angka, ditemukan '{teks}'.")
+
+
+def muat_graph_rak(file_rak=FILE_RAK, file_koneksi=FILE_KONEKSI):
+    """Membangun graph rak dari file CSV.
+
+    Graph utama: tidak berarah, berbobot (jarak jalan kaki antar rak dalam meter).
+    Simpul  = baris di file rak     (kolom id_rak, nama_rak, lokasi)
+    Sisi    = baris di file koneksi (kolom rak_asal, rak_tujuan, jarak_m)
+
+    Raises:
+        FileNotFoundError: jika salah satu file tidak ada.
+        ValueError: jika kolom/isi file salah (pesan menyebut nomor baris).
+    """
+    graph = Graph(berarah=False, berbobot=True)
+
+    baris_rak = _baca_csv(file_rak, ["id_rak", "nama_rak", "lokasi"])
+    if not baris_rak:
+        raise ValueError(f"{os.path.basename(file_rak)}: tidak ada data rak.")
+    nomor = 1
+    for baris in baris_rak:
+        nomor += 1                    # nomor baris di file (baris 1 = judul kolom)
+        try:
+            id_rak = (baris["id_rak"] or "").strip()
+            keterangan = f"{(baris['nama_rak'] or '').strip()} ({(baris['lokasi'] or '').strip()})"
+            graph.tambah_simpul(id_rak, keterangan)
+        except ValueError as e:
+            raise ValueError(f"{os.path.basename(file_rak)} baris {nomor}: {e}")
+
+    baris_koneksi = _baca_csv(file_koneksi, ["rak_asal", "rak_tujuan", "jarak_m"])
+    nomor = 1
+    for baris in baris_koneksi:
+        nomor += 1
+        try:
+            jarak = _ke_angka(baris["jarak_m"])
+            graph.tambah_sisi((baris["rak_asal"] or "").strip(),
+                              (baris["rak_tujuan"] or "").strip(), jarak)
+        except ValueError as e:
+            raise ValueError(f"{os.path.basename(file_koneksi)} baris {nomor}: {e}")
+    return graph
+
+
+# Nama lama dipertahankan agar kode yang sudah memakainya (mis. tes_sinkron.py) tetap jalan.
+buat_graph_rak = muat_graph_rak
 
 
 if __name__ == "__main__":
-    print("=== Demo Graph rak perpustakaan ===")
-    g = buat_graph_rak()
+    print("=== Demo Graph rak perpustakaan (data dari file CSV) ===")
+    g = muat_graph_rak()
 
-    print("\n1) Graph utama (adjacency list):")
+    print("\n1) Simpul dan keterangannya:")
+    for id_rak in g.daftar_simpul():
+        print(f"  {id_rak}: {g.keterangan(id_rak)}")
+
+    print("\n2) Graph utama (adjacency list):")
     g.display()
 
-    print("\n2) Penelusuran dari simpul awal R01:")
-    print(f"  BFS: {' -> '.join(g.bfs('R01'))}")
-    print(f"  DFS: {' -> '.join(g.dfs('R01'))}")
+    print("\n3) Penelusuran dari simpul awal RAK-KOM:")
+    print(f"  BFS: {' -> '.join(g.bfs('RAK-KOM'))}")
+    print(f"  DFS: {' -> '.join(g.dfs('RAK-KOM'))}")
 
-    print("\n3) Rute dengan langkah paling sedikit R01 ke R10:")
-    rute, total = g.rute_tersingkat_langkah("R01", "R10")
-    print(f"  {' -> '.join(rute)}  (total jarak {total} m)")
+    print("\n4) Rute dengan langkah paling sedikit RAK-KOM ke RAK-JUR:")
+    rute, total = g.rute_tersingkat_langkah("RAK-KOM", "RAK-JUR")
+    print(f"  {' -> '.join(rute)}  ({len(rute) - 1} langkah, total jarak {total} m)")
+    for id_rak in rute:
+        print(f"    {id_rak}: {g.keterangan(id_rak)}")
 
-    print("\n4) Empat variasi graph (contoh kecil: Pintu, R01, R02, Layanan):")
+    print("\n5) Empat variasi graph (contoh kecil: Pintu, RAK-KOM, RAK-NOV, Layanan):")
     contoh = [
         (False, False, "tidak berarah, tidak berbobot"),
         (False, True, "tidak berarah, berbobot (jenis graph utama)"),
@@ -252,23 +335,24 @@ if __name__ == "__main__":
     for berarah, berbobot, judul in contoh:
         print(f"\n  [{judul}]")
         kecil = Graph(berarah=berarah, berbobot=berbobot)
-        for nama in ["Pintu", "R01", "R02", "Layanan"]:
+        for nama in ["Pintu", "RAK-KOM", "RAK-NOV", "Layanan"]:
             kecil.tambah_simpul(nama)
-        kecil.tambah_sisi("Pintu", "R01", 5)
-        kecil.tambah_sisi("R01", "R02", 3)
-        kecil.tambah_sisi("R02", "Layanan", 4)
+        kecil.tambah_sisi("Pintu", "RAK-KOM", 5)
+        kecil.tambah_sisi("RAK-KOM", "RAK-NOV", 3)
+        kecil.tambah_sisi("RAK-NOV", "Layanan", 4)
         kecil.display()
         print(f"  BFS dari Pintu: {' -> '.join(kecil.bfs('Pintu'))}")
         print(f"  BFS dari Layanan: {' -> '.join(kecil.bfs('Layanan'))}")
 
-    print("\n5) Validasi input:")
+    print("\n6) Validasi input:")
     for aksi, fungsi in [
-        ("simpul duplikat", lambda: g.tambah_simpul("R01")),
-        ("sisi ke simpul tidak ada", lambda: g.tambah_sisi("R01", "R99", 3)),
-        ("bobot negatif", lambda: g.tambah_sisi("R01", "R03", -2)),
-        ("BFS dari simpul tidak ada", lambda: g.bfs("R99")),
+        ("simpul duplikat", lambda: g.tambah_simpul("RAK-KOM")),
+        ("sisi ke simpul tidak ada", lambda: g.tambah_sisi("RAK-KOM", "RAK-XXX", 3)),
+        ("bobot negatif", lambda: g.tambah_sisi("RAK-KOM", "RAK-JUR", -2)),
+        ("BFS dari simpul tidak ada", lambda: g.bfs("RAK-XXX")),
+        ("file data tidak ada", lambda: muat_graph_rak(file_rak="data/tidak_ada.csv")),
     ]:
         try:
             fungsi()
-        except ValueError as e:
+        except (ValueError, FileNotFoundError) as e:
             print(f"  {aksi}: error ditangani -> {e}")
