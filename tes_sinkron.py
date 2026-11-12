@@ -24,6 +24,7 @@ class Anggota:
         self.id_anggota, self.nama = id_anggota, nama
 
 
+DAFTAR_RAK = ["RAK-KOM", "RAK-NOV", "RAK-SEJ", "RAK-ILM", "RAK-JUR"]   # 5 rak sesuai data_rak.csv
 rng = random.Random(42)
 
 # 1) Muat 100 buku ke Array (urut) dan BST (urutan acak)
@@ -31,7 +32,7 @@ daftar_buku = DynamicArray(key_func=lambda b: b.id_buku)
 pohon_buku = BST()
 urutan = list(range(1, 101))
 for i in urutan:
-    daftar_buku.insert(Buku(f"B{i:05d}", f"Judul {i}", f"R{(i - 1) // 10 + 1:02d}", 1 if i % 10 == 0 else 3))
+    daftar_buku.insert(Buku(f"B{i:05d}", f"Judul {i}", DAFTAR_RAK[(i - 1) // 20], 1 if i % 10 == 0 else 3))
 rng.shuffle(urutan)
 for i in urutan:
     pohon_buku.insert(f"B{i:05d}", daftar_buku.search(f"B{i:05d}"))
@@ -83,9 +84,9 @@ assert pinjam(*antrean.dequeue()) == "BERHASIL"      # antrean dilayani FIFO
 # 4) Graph: rute dari rak buku ke rak lain, BFS dan DFS memuat semua rak
 graph = buat_graph_rak()
 rak_buku = pohon_buku.search("B00010").id_rak
-rute, total = graph.rute_tersingkat_langkah(rak_buku, "R10")
-assert rute[0] == rak_buku and rute[-1] == "R10" and total > 0
-assert len(graph.bfs("R01")) == len(graph.dfs("R01")) == 10
+rute, total = graph.rute_tersingkat_langkah(rak_buku, "RAK-JUR")
+assert rute[0] == rak_buku and rute[-1] == "RAK-JUR" and total > 0
+assert len(graph.bfs("RAK-KOM")) == len(graph.dfs("RAK-KOM")) == 5
 assert pohon_buku.search("B00001") is not None and pohon_buku.search("B99999") is None
 
 print("SINKRONISASI LULUS: Array, Linked List, BST, Stack, Queue, Hash Table, dan Graph bekerja bersama")

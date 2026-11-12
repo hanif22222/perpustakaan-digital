@@ -1,0 +1,101 @@
+id_buku,judul,penulis,kategori,tahun_terbit,id_rak
+B001,Bumi,Tere Liye,Novel,2017,RAK-NOV
+B002,Bulan,Tere Liye,Novel,2015,RAK-NOV
+B003,Matahari,Tere Liye,Novel,2024,RAK-NOV
+B004,Bintang,Tere Liye,Novel,2020,RAK-NOV
+B005,Ceroz & Batozar,Tere Liye,Novel,2021,RAK-NOV
+B006,Komet,Tere Liye,Novel,2014,RAK-NOV
+B007,Komet Minor,Tere Liye,Novel,2017,RAK-NOV
+B008,Selena,Tere Liye,Novel,2016,RAK-NOV
+B009,Nebula,Tere Liye,Novel,2015,RAK-NOV
+B010,Si Putih,Tere Liye,Novel,2015,RAK-NOV
+B011,Lumpu,Tere Liye,Novel,2023,RAK-NOV
+B012,Bibi Gill,Tere Liye,Novel,2015,RAK-NOV
+B013,Sagaras,Tere Liye,Novel,2021,RAK-NOV
+B014,Matahari Minor,Tere Liye,Novel,2015,RAK-NOV
+B015,ILY,Tere Liye,Novel,2017,RAK-NOV
+B016,Proxima,Tere Liye,Novel,2019,RAK-NOV
+B017,Andromeda,Tere Liye,Novel,2023,RAK-NOV
+B018,Sirius,Tere Liye,Novel,2022,RAK-NOV
+B019,Vega,Tere Liye,Novel,2020,RAK-NOV
+B020,Altair,Tere Liye,Novel,2019,RAK-NOV
+B021,Naruto Volume 1,Masashi Kishimoto,Komik,2014,RAK-KOM
+B022,Naruto Volume 2,Masashi Kishimoto,Komik,2011,RAK-KOM
+B023,Naruto Volume 3,Masashi Kishimoto,Komik,2001,RAK-KOM
+B024,Naruto Volume 4,Masashi Kishimoto,Komik,2001,RAK-KOM
+B025,Naruto Volume 5,Masashi Kishimoto,Komik,2001,RAK-KOM
+B026,Naruto Volume 6,Masashi Kishimoto,Komik,1999,RAK-KOM
+B027,Naruto Volume 7,Masashi Kishimoto,Komik,2000,RAK-KOM
+B028,Naruto Volume 8,Masashi Kishimoto,Komik,2000,RAK-KOM
+B029,Naruto Volume 9,Masashi Kishimoto,Komik,2014,RAK-KOM
+B030,Naruto Volume 10,Masashi Kishimoto,Komik,2012,RAK-KOM
+B031,One Piece Volume 1,Eiichiro Oda,Komik,2001,RAK-KOM
+B032,One Piece Volume 2,Eiichiro Oda,Komik,2010,RAK-KOM
+B033,One Piece Volume 3,Eiichiro Oda,Komik,2003,RAK-KOM
+B034,One Piece Volume 4,Eiichiro Oda,Komik,2001,RAK-KOM
+B035,One Piece Volume 5,Eiichiro Oda,Komik,2006,RAK-KOM
+B036,One Piece Volume 6,Eiichiro Oda,Komik,2008,RAK-KOM
+B037,One Piece Volume 7,Eiichiro Oda,Komik,2003,RAK-KOM
+B038,One Piece Volume 8,Eiichiro Oda,Komik,2000,RAK-KOM
+B039,One Piece Volume 9,Eiichiro Oda,Komik,1997,RAK-KOM
+B040,One Piece Volume 10,Eiichiro Oda,Komik,2007,RAK-KOM
+B041,Sejarah Kekaisaran Tradisi,Penulis D94,Sejarah,2016,RAK-SEJ
+B042,Sejarah Perang Kronik,Penulis P87,Sejarah,2013,RAK-SEJ
+B043,Sejarah Kemerdekaan Kekaisaran,Penulis W31,Sejarah,2010,RAK-SEJ
+B044,Sejarah Kerajaan Jejak,Penulis W42,Sejarah,2019,RAK-SEJ
+B045,Sejarah Kronik Zaman,Penulis V27,Sejarah,2010,RAK-SEJ
+B046,Sejarah Budaya Kronik,Penulis P85,Sejarah,2010,RAK-SEJ
+B047,Sejarah Pahlawan Kerajaan,Penulis H28,Sejarah,2021,RAK-SEJ
+B048,Sejarah Budaya Zaman,Penulis C41,Sejarah,2019,RAK-SEJ
+B049,Sejarah Zaman Perang,Penulis A37,Sejarah,2010,RAK-SEJ
+B050,Sejarah Dinasti Masa,Penulis X69,Sejarah,2023,RAK-SEJ
+B051,Sejarah Kerajaan Zaman,Penulis O55,Sejarah,2017,RAK-SEJ
+B052,Sejarah Masa Pahlawan,Penulis C1,Sejarah,2010,RAK-SEJ
+B053,Sejarah Penemuan Kekaisaran,Penulis K55,Sejarah,2013,RAK-SEJ
+B054,Sejarah Revolusi Kemerdekaan,Penulis N25,Sejarah,2019,RAK-SEJ
+B055,Sejarah Penemuan Catatan,Penulis V42,Sejarah,2017,RAK-SEJ
+B056,Sejarah Tradisi Jejak,Penulis Z57,Sejarah,2022,RAK-SEJ
+B057,Sejarah Kemerdekaan Pahlawan,Penulis X99,Sejarah,2018,RAK-SEJ
+B058,Sejarah Kemerdekaan Kerajaan,Penulis O95,Sejarah,2011,RAK-SEJ
+B059,Sejarah Penemuan Pahlawan,Penulis P45,Sejarah,2015,RAK-SEJ
+B060,Sejarah Zaman Dinasti,Penulis I25,Sejarah,2023,RAK-SEJ
+B061,Jurnal Efektivitas dan Perbandingan,Penulis U70,Jurnal,2014,RAK-JUR
+B062,Jurnal Inovasi dan Faktor,Penulis O63,Jurnal,2017,RAK-JUR
+B063,Jurnal Kajian dan Perbandingan,Penulis E59,Jurnal,2012,RAK-JUR
+B064,Jurnal Faktor dan Model,Penulis H2,Jurnal,2019,RAK-JUR
+B065,Jurnal Penelitian dan Analisis,Penulis R78,Jurnal,2019,RAK-JUR
+B066,Jurnal Studi dan Penerapan,Penulis H22,Jurnal,2019,RAK-JUR
+B067,Jurnal Pengaruh dan Pendekatan,Penulis S89,Jurnal,2018,RAK-JUR
+B068,Jurnal Penelitian dan Faktor,Penulis B43,Jurnal,2014,RAK-JUR
+B069,Jurnal Strategi dan Pengembangan,Penulis E87,Jurnal,2017,RAK-JUR
+B070,Jurnal Efektivitas dan Studi,Penulis Y88,Jurnal,2017,RAK-JUR
+B071,Jurnal Penelitian dan Kajian,Penulis L28,Jurnal,2020,RAK-JUR
+B072,Jurnal Analisis dan Faktor,Penulis P18,Jurnal,2019,RAK-JUR
+B073,Jurnal Pendekatan dan Efektivitas,Penulis Z76,Jurnal,2019,RAK-JUR
+B074,Jurnal Pendekatan dan Strategi,Penulis R59,Jurnal,2016,RAK-JUR
+B075,Jurnal Perbandingan dan Dampak,Penulis L29,Jurnal,2022,RAK-JUR
+B076,Jurnal Penerapan dan Studi,Penulis B61,Jurnal,2011,RAK-JUR
+B077,Jurnal Tren dan Analisis,Penulis J46,Jurnal,2011,RAK-JUR
+B078,Jurnal Metode dan Evaluasi,Penulis A19,Jurnal,2016,RAK-JUR
+B079,Jurnal Penerapan dan Pengaruh,Penulis F93,Jurnal,2016,RAK-JUR
+B080,Jurnal Model dan Dampak,Penulis H30,Jurnal,2010,RAK-JUR
+B081,Pengantar Kuantum Kosmologi,Penulis S7,Ilmu Pengetahuan,2010,RAK-ILM
+B082,Pengantar Komputer Geologi,Penulis C49,Ilmu Pengetahuan,2019,RAK-ILM
+B083,Pengantar Botani Matematika,Penulis M75,Ilmu Pengetahuan,2023,RAK-ILM
+B084,Pengantar Mekanika Statistika,Penulis O52,Ilmu Pengetahuan,2017,RAK-ILM
+B085,Pengantar Sains Statistika,Penulis S13,Ilmu Pengetahuan,2016,RAK-ILM
+B086,Pengantar Teknologi Komputer,Penulis X45,Ilmu Pengetahuan,2019,RAK-ILM
+B087,Pengantar Anatomi Mekanika,Penulis I71,Ilmu Pengetahuan,2014,RAK-ILM
+B088,Pengantar Kosmologi Evolusi,Penulis V8,Ilmu Pengetahuan,2019,RAK-ILM
+B089,Pengantar Teknologi Statistika,Penulis H70,Ilmu Pengetahuan,2020,RAK-ILM
+B090,Pengantar Fisika Biologi,Penulis V9,Ilmu Pengetahuan,2023,RAK-ILM
+B091,Pengantar Teknologi Genetika,Penulis W61,Ilmu Pengetahuan,2015,RAK-ILM
+B092,Pengantar Anatomi Teknologi,Penulis N57,Ilmu Pengetahuan,2021,RAK-ILM
+B093,Pengantar Geologi Komputer,Penulis D70,Ilmu Pengetahuan,2019,RAK-ILM
+B094,Pengantar Botani Kuantum,Penulis Y15,Ilmu Pengetahuan,2018,RAK-ILM
+B095,Pengantar Astronomi Genetika,Penulis I39,Ilmu Pengetahuan,2012,RAK-ILM
+B096,Pengantar Biologi Geologi,Penulis X29,Ilmu Pengetahuan,2012,RAK-ILM
+B097,Pengantar Zoologi Botani,Penulis D61,Ilmu Pengetahuan,2020,RAK-ILM
+B098,Pengantar Genetika Kosmologi,Penulis Z55,Ilmu Pengetahuan,2022,RAK-ILM
+B099,Pengantar Mekanika Ekologi,Penulis A83,Ilmu Pengetahuan,2023,RAK-ILM
+B100,Pengantar Biologi Botani,Penulis V19,Ilmu Pengetahuan,2015,RAK-ILM
