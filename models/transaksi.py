@@ -67,6 +67,13 @@ class Transaksi:
         self.tanggal_kembali = tanggal
         self.status = self.STATUS_DIKEMBALIKAN
 
+    def batalkan_pengembalian(self):
+        """Mengembalikan transaksi ke status Dipinjam (dipakai fitur undo)."""
+        if self.sedang_dipinjam():
+            raise ValueError(f"Transaksi {self.id_transaksi} belum dikembalikan.")
+        self.tanggal_kembali = None
+        self.status = self.STATUS_DIPINJAM
+
     @classmethod
     def dari_baris(cls, baris):
         """Membuat Transaksi dari satu baris CSV (dict dari csv.DictReader)."""

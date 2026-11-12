@@ -68,6 +68,9 @@ harus_error(lambda: t.kembalikan("2026-13-40"), "valid")
 t.kembalikan("2026-11-05")
 assert not t.sedang_dipinjam() and t.status == "Dikembalikan"
 harus_error(lambda: t.kembalikan("2026-11-06"), "sudah dikembalikan")
+t.batalkan_pengembalian()
+assert t.sedang_dipinjam() and t.tanggal_kembali is None
+harus_error(lambda: t.batalkan_pengembalian(), "belum dikembalikan")
 harus_error(lambda: Transaksi("T2", "A1", "B1", "2026-11-01", "2026-11-02", "Dipinjam"), "tidak boleh punya")
 harus_error(lambda: Transaksi("T2", "A1", "B1", "2026-11-01", None, "Dikembalikan"), "wajib punya")
 harus_error(lambda: Transaksi("T2", "A1", "B1", "2026-11-01", None, "Hilang"), "Status")
